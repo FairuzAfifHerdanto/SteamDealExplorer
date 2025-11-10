@@ -1,15 +1,15 @@
-Steam Deal Explorer
+**🎮 Steam Deal Explorer**
 
 Sebuah dashboard visualisasi data interaktif untuk menemukan penawaran (deal) game terbaik di Steam, dibuat sebagai bagian dari Proyek A4.
 
-Demo Interaktif
+**🚀 Demo Interaktif**
 
 Visualisasi ini di-hosting menggunakan GitHub Pages. Anda bisa mengakses dan berinteraksi dengan versi livenya di sini:
 
 https://edrilmarfadli.github.io/SteamDealExplorer/steam_deal_explorer.html
 
-Deskripsi Proyek
-
+**📖 Deskripsi Proyek
+**
 Seringkali sulit untuk menemukan game yang bagus sekaligus murah di Steam. Diskon besar (misalnya -80%) belum tentu berarti gamenya bagus (bisa jadi ulasannya 'Mixed'). Sebaliknya, game berkualitas tinggi (ulasan 'Overwhelmingly Positive') mungkin jarang diskon.
 
 Steam Deal Explorer adalah alat bantu untuk mengatasi masalah ini. Dashboard interaktif ini memungkinkan pengguna untuk memfilter ribuan game Steam berdasarkan:
@@ -24,7 +24,7 @@ Steam Deal Explorer adalah alat bantu untuk mengatasi masalah ini. Dashboard int
 
 Tujuannya adalah untuk membantu pengguna mendefinisikan "penawaran terbaik" versi mereka sendiri dan menemukan game berkualitas tinggi yang sesuai dengan budget mereka.
 
-Fitur Utama
+**✨ Fitur Utama**
 
 Filter Interaktif: Cari berdasarkan judul, atur slider untuk rentang harga dan persentase diskon.
 
@@ -38,49 +38,55 @@ Bar Chart (Diskon vs. Ulasan): Menjawab pertanyaan, "Apakah game dengan ulasan b
 
 Daftar 'Top Savings': Daftar game yang sudah terfilter, diurutkan berdasarkan jumlah uang (dalam dolar) yang paling banyak Anda hemat.
 
----------------------------------------- DELIVERABLES ------------------------------------------------------
-1. A rationale for your design decisions:
-A. Mengapa memilih visual encoding ini:
-- Scatter plot dipilih karena paling efektif menunjukkan hubungan antara harga asli dan harga diskon. Games yang “diskonnya besar” langsung terlihat jauh di bawah garis diagonal (baseline).
-- Histogram digunakan karena bentuknya paling tepat untuk menunjukkan sebaran diskon secara keseluruhan dan mudah dibaca.
-- Bar chart dipilih karena mudah membandingkan kategori sentiment review dan melihat apakah sentiment tertentu cenderung mendapat diskon lebih besar.
-B. Kenapa memilih interaction techniques ini:
-- Zoom & pan dipilih karena pengguna perlu memeriksa area tertentu dari scatter yang bisa sangat padat.
-- Dynamic query filters (search, slider harga, slider diskon, filter sentiment) dipilih karena sangat mendukung eksplorasi mandiri tanpa reload halaman.
-- Tooltip dipilih sebagai details-on-demand supaya informasi game tetap tersedia tanpa membuat visualisasi penuh teks.
-C. Kenapa memilih Plotly.js dan bukan D3.js
-- Plotly menawarkan interaksi dasar seperti zoom, pan, hover, filter update, dan transisi secara otomatis.
-- Plotly mempercepat implementasi sehingga fokus dapat diberikan pada logika interaksi, bukan low-level DOM manipulasi seperti D3.
-- Plotly menghasilkan UI yang bersih dengan lebih sedikit kode, cocok untuk timeline tugas dua minggu
-Intinya, plotly lebih mudah digunakan dan sederhana.
+**🔬 Rasionalisasi Desain (Design Rationale)
+**
+Pilihan desain visualisasi dan interaksi didasarkan pada tujuan utama: memungkinkan pengguna untuk "menemukan penawaran bagus secara subjektif".
 
-2. Overview of Development Process
+**Pilihan Visual Encoding**
+
+**Scatter Plot (Harga Asli vs. Harga Saat Ini)**: Ini adalah visualisasi inti. Sebuah diskon -80% tidak ada artinya jika harga aslinya hanya $1. Sebaliknya, diskon -40% untuk game $60 (hemat $24) jauh lebih signifikan. Plot ini, ditambah dengan garis y=x (garis tanpa diskon), secara visual mengkodekan nilai penghematan moneter sebagai jarak vertikal titik dari garis. Ini jauh lebih informatif daripada hanya menunjukkan persentase diskon.
+
+**Bar Chart (Diskon Rata-rata vs. Ulasan)**: Daripada membanjiri pengguna dengan ribuan titik data, saya memilih untuk mengagregasi data. Bar chart ini dengan cepat menjawab pertanyaan analitis tingkat tinggi: "Secara rata-rata, apakah game 'Overwhelmingly Positive' mendapatkan diskon yang lebih buruk daripada game 'Mixed'?"
+
+**Histogram (Distribusi Diskon)**: Ini memberikan konteks penting bagi pengguna. Ini membantu mereka memahami "lanskap" diskon saat ini. Jika mereka melihat banyak game di bin -75%, mereka tahu bahwa itu adalah diskon yang umum.
+
+Daftar "Top Savings" (Tabel Teks): Grafik bagus untuk analisis pola, tetapi untuk tindakan, pengguna memerlukan daftar yang jelas dan dapat dibaca. Daftar yang diurutkan ini adalah "jawaban" akhir. Setelah pengguna menerapkan semua filter (budget, kualitas), daftar ini memberi mereka hasil yang dapat ditindaklanjuti, diurutkan berdasarkan penghematan dolar terbesar.
+
+**Pilihan Interaksi**
+
+**Filter (Kontrol)**: Interaksi utama adalah filtering (penyaringan), bukan brushing & linking yang kompleks. Tujuannya adalah untuk mempersempit (drill-down) dari ribuan game menjadi segelintir game yang relevan.
+
+**Slider (Harga & Diskon)**: Slider adalah cara paling intuitif untuk menentukan rentang numerik.
+
+**Dropdown Multi-Select (Ulasan)**: Kualitas (ulasan) adalah data kategorikal. Dropdown multi-select memungkinkan pengguna untuk menggabungkan kategori (misalnya, "Hanya tampilkan game 'Very Positive' DAN 'Overwhelmingly Positive'").
+
+**Hover (Detail-on-Demand)**: Plotly.js menyediakan tooltips (info saat hover) yang kaya secara default. Ini penting untuk melihat detail game (judul, harga, dll.) tanpa harus mencari di daftar.
+
+**Alternatif yang Dipertimbangkan**
+
+Treemap: kami mempertimbangkan menggunakan treemap untuk memvisualisasikan game berdasarkan kategori atau popularitas. Namun, ini saya batalkan karena kurang efektif untuk tujuan utama (mencari diskon) dan akan membuat dashboard terlalu padat.
+
+Satu Scatter Plot Besar: Alternatif lain adalah bubble chart tunggal (Harga vs. Diskon, dengan ukuran = skor ulasan). Ini ditolak karena bar chart dan filter multi-select terpisah jauh lebih mudah dibaca dan lebih presisi untuk memfilter berdasarkan kualitas.
+
+**🛠️ Proses Pengembangan (Development Process)**
+
 - Pembagian Kerja
 
 1. Edril Marfadli : Dataset & csv
 2. Aqilah Fikry Albari: HTML
-3. Fairuz Afif Herdanto
-4. Gilang Yanuar : 
-5. Reggy Firmansyah
+3. Gilang Yanuar Cahaya: HTML
+4. Fairuz Afif: HTML
    
-- Estimasi Waktu Pengerjaan
+**Aspek yang Memakan Waktu Terbanyak:
+**
+1. Logika Reaktivitas & Filtering (Tugas Anggota 2, Inti): Membuat semua visualisasi (tiga chart dan satu daftar teks) diperbarui secara instan sebagai respons terhadap kombinasi dari empat jenis filter yang berbeda adalah bagian terlama, membutuhkan debugging yang signifikan, dan menyerap sebagian besar waktu tim.
 
-Total waktu pengerjaan sekitar 14–18 jam.
+2. Desain & Styling (Tugas Anggota 3): Memastikan tampilan dashboard yang profesional, responsif, dan konsisten dengan tema gelap Steam juga membutuhkan waktu tuning yang cukup lama.
 
-- Bagian yang Paling Banyak Memakan Waktu
-Beberapa bagian yang memakan waktu:
-1. Menentukan jenis visualisasi yang paling sesuai dengan data, terutama karena dataset tidak memiliki kolom genre atau jumlah review numerik.
-2. Mengonversi harga dan diskon menjadi nilai numerik serta menghitung perkiraan harga asli setiap game.
-3. Mengimplementasikan sistem filter dinamis yang memengaruhi tiga grafik sekaligus (scatter, histogram, bar chart).
-4. Mengatur tampilan agar mirip gaya Steam dengan tetap menjaga keterbacaan dan responsivitas.
+3. Transformasi Data & Analisis Awal: Tugas ini, yang meliputi konversi format data dan EDA, adalah tugas yang paling cepat diselesaikan, diperkirakan total 2-3 jam gabungan antara Anggota 1 dan Anggota 5.
 
-- Komentar Terhadap Proses Pengembangan
 
-Proses dimulai dengan eksplorasi dataset untuk memahami variabel apa saja yang memungkinkan dijadikan insight. Setelah mengetahui keterbatasan data, fokus dialihkan ke relasi harga–diskon–sentiment. Tahap berikutnya adalah membuat struktur visualisasi dan kontrol interaksinya. Implementasi dilakukan secara bertahap: mulai dari scatter plot, lalu histogram, bar chart, hingga panel daftar “Top Savings”. Setelah visualisasi berfungsi, dilakukan beberapa iterasi untuk memperbaiki tampilan, memastikan transisi antar filter berjalan mulus, dan menyesuaikan warna agar konsisten dengan tema Steam. Proses ini berjalan secara iteratif hingga dashboard mencapai bentuk final yang stabil dan mudah digunakan.
-
----------------------------------------- DELIVERABLES ------------------------------------------------------
-
-Sumber Data
+**📊 Sumber Data**
 
 Dataset utama: steam_store_data_2024.csv
 
